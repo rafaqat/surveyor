@@ -4,7 +4,7 @@ Feature: Survey with validations
   And be notified when I answer incorrectly
 
   # Issue 34 - client side validation for mandatory question
-  @javascript
+  @javascript @pause
   Scenario: Creating a mandatory question
     Given I parse
     """
