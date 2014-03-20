@@ -68,6 +68,14 @@ module Surveyor
     # This method_missing does all the heavy lifting for the DSL
     def method_missing(missing_method, *args, &block)
       method_name, reference_identifier = missing_method.to_s.split("_", 2)
+
+      # Quick fix to allow validations and dependencies on a single question.
+      if method_name == 'validation'
+        context[:last] = 'validation'
+      elsif method_name == 'dependency'
+        context[:last] = 'dependency'
+      end
+
       type = full(method_name)
       Surveyor::Parser.raise_error( "\"#{type}\" is not a surveyor method." )if !%w(survey survey_translation survey_section question_group question dependency dependency_condition answer validation validation_condition).include?(type)
 
@@ -113,7 +121,7 @@ module Surveyor
       when /^q$|^label$|^image$/; "question"
       when /^a$/; "answer"
       when /^d$/; "dependency"
-      when /^c(ondition)?$/; context[:validation] ? "validation_condition" : "dependency_condition"
+      when /^c(ondition)?$/; context[:last] == 'validation' ? "validation_condition" : "dependency_condition"
       when /^v$/; "validation"
       when /^dc(ondition)?$/; "dependency_condition"
       when /^vc(ondition)?$/; "validation_condition"
