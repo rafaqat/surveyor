@@ -70,7 +70,8 @@ class Question < ActiveRecord::Base
       dsl << "    q"
     end
     dsl << "_#{reference_identifier}" unless reference_identifier.blank?
-    dsl << " \"#{text.gsub(/[{|\"'}]/, '"' => "'", "{|\}" => "", "'" => "\'")}\""
+    #we need to convert double to single quotes for parsing html properties
+    dsl << " \"#{text.gsub(/["]/, "'")}\""
     dsl << (attrs.blank? ? "\n" : ", #{attrs.inspect.gsub(/\{|\}/, "")}\n")
     if solo? or question_group.display_type != "grid"
       answers.each{|answer| answer.unparse(dsl)}
