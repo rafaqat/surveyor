@@ -47,7 +47,9 @@ module Surveyor
       end
 
       def translation(locale)
-        {:title => self.title, :description => self.description}.with_indifferent_access.merge(
+        text = {:title => self.title, :description => self.description}
+        return text #DISABLE TRANSLATIONS
+        text.with_indifferent_access.merge(
           (self.survey.translation(locale)[:survey_sections] || {})[self.reference_identifier] || {}
         )
       end

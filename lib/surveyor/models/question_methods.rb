@@ -98,7 +98,9 @@ module Surveyor
         r.blank? ? :default : r.to_sym
       end
       def translation(locale)
-        {:text => self.text, :help_text => self.help_text}.with_indifferent_access.merge(
+        text = {:text => self.text, :help_text => self.help_text}
+        return text #DISABLE TRANSLATIONS
+        text.with_indifferent_access.merge(
           (self.survey_section.survey.translation(locale)[:questions] || {})[self.reference_identifier] || {}
         )
       end

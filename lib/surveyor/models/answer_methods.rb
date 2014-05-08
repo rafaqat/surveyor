@@ -71,7 +71,9 @@ module Surveyor
         end.to_s
       end
       def translation(locale)
-        {:text => self.text, :help_text => self.help_text, :default_value => self.default_value}.with_indifferent_access.merge(
+        text = {:text => self.text, :help_text => self.help_text, :default_value => self.default_value}
+        return text #DISABLE TRANSLATIONS
+        text.with_indifferent_access.merge(
           (self.question.translation(locale)[:answers] || {})[self.reference_identifier] || {}
         )
       end

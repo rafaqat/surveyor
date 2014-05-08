@@ -1,5 +1,5 @@
 .surveyor_menu
-  - if !@survey.translations.empty?
+  - if !@survey.translations.empty? && false
     = hidden_field_tag "current_section", @section.id
     .surveyor_language_selection
       = label_tag "locale", t('surveyor.language')
