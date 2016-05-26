@@ -7,6 +7,11 @@ module Surveyor
     root = File.expand_path('../../', __FILE__)
     config.autoload_paths << root
     config.to_prepare do
+      Dir.glob(File.expand_path("../../../lib/surveyor/helpers/*.rb",__FILE__)).each do |helper|
+        puts "requiring...: #{helper}"
+        require_dependency(helper)
+      end
+
       Dir.glob(File.expand_path('../../../app/inputs/*_input*.rb', __FILE__)).each do |c|
         require_dependency(c)
       end
