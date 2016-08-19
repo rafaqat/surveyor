@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency('rails', '>= 3.2')
   s.add_dependency('haml', '~> 4.0')
   s.add_dependency('sass')
-  s.add_dependency('formtastic', '~> 2.2.1') # 2.1 requries actionpack 3.0
+  s.add_dependency('formtastic', '~> 3.0') # 2.1 requries actionpack 3.0
   s.add_dependency('uuidtools', '~> 2.1')
   s.add_dependency('mustache', '~> 0.99')
   s.add_dependency('rabl', '~> 0.6')
@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('yard')
   s.add_development_dependency('rake')
   s.add_development_dependency('sqlite3')
-  s.add_development_dependency('bundler', '~> 1.6.1')
+  s.add_development_dependency('bundler')
   s.add_development_dependency('rspec-rails', '~> 2.14.2')
   s.add_development_dependency('capybara', '~> 2.2.1')
   s.add_development_dependency('launchy', '~> 2.4.2')
