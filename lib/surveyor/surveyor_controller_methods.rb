@@ -16,8 +16,7 @@ module Surveyor
 
     # Actions
     def new
-      surveys_ids = ResponseSet.where(user_id: current_user.id).pluck(:survey_id)
-      @surveys_by_access_code = Survey.where(id: surveys_ids).order("created_at DESC, survey_version DESC").to_a.group_by(&:access_code)
+      @surveys_by_access_code = Survey.order("created_at DESC, survey_version DESC").to_a.group_by(&:access_code)
       redirect_to surveyor_index unless surveyor_index == surveyor.available_surveys_path
     end
 
