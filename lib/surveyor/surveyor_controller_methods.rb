@@ -6,21 +6,20 @@ module Surveyor
   module SurveyorControllerMethods
     extend ActiveSupport::Concern
     included do
-      before_filter :get_current_user, :only => [:new, :create]
-      before_filter :determine_if_javascript_is_enabled, :only => [:create, :update]
-      before_filter :set_response_set_and_render_context, :only => [:edit, :show, :delete_response]
-
       layout 'surveyor_default'
       before_filter :set_locale
     end
 
     # Actions
     def new
+      get_current_user
       @surveys_by_access_code = Survey.order("created_at DESC, survey_version DESC").to_a.group_by(&:access_code)
       redirect_to surveyor_index unless surveyor_index == surveyor.available_surveys_path
     end
 
     def create
+      get_current_user
+      determine_if_javascript_is_enabled
       surveys = Survey.where(:access_code => params[:survey_code]).order("survey_version DESC")
       if params[:survey_version].blank?
         @survey = surveys.first
@@ -41,6 +40,7 @@ module Surveyor
 
     def show
       # @response_set is set in before_filter - set_response_set_and_render_context
+      set_response_set_and_render_context
       if @response_set
         @survey = @response_set.survey
         respond_to do |format|
@@ -50,6 +50,7 @@ module Surveyor
               :filename => "#{@response_set.updated_at.strftime('%m-%d-%Y')}_#{@response_set.access_code}.csv")
           }
           format.json
+          format.pdf
         end
       else
         flash[:notice] = t('surveyor.unable_to_find_your_responses')
@@ -59,6 +60,7 @@ module Surveyor
 
     def edit
       # @response_set is set in before_filter - set_response_set_and_render_context
+      set_response_set_and_render_context
       if @response_set
         @sections = SurveySection.where(survey_id: @response_set.survey_id).includes([:survey, {questions: [{answers: :question}, {question_group: :dependency}, :dependency]}])
         @section = (section_id_from(params) ? @sections.where(id: section_id_from(params)).first : @sections.first) || @sections.first
@@ -71,6 +73,7 @@ module Surveyor
     end
 
     def update
+      determine_if_javascript_is_enabled
       question_ids_for_dependencies = (params[:r] || []).map{|k,v| v["question_id"] }.compact.uniq
       saved = load_and_update_response_set_with_retries
 
@@ -97,6 +100,7 @@ module Surveyor
     end
 
     def delete_response
+      set_response_set_and_render_context
       question_id = params[:question_id]
       responses = @response_set.responses.where(:question_id => question_id) if @response_set.present?
       respond_to do |format|
