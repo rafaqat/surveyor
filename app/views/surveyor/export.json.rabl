@@ -1,6 +1,7 @@
 object @survey
 attribute :title
 attribute :user_id
+attribute :created_at
 attribute :id
 attribute :api_id                       => :uuid
 node(:description,                  :if => lambda {|s| !s.description.blank? }){|s| s.description }
