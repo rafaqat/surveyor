@@ -4,10 +4,12 @@ attribute :created_at
 attribute :completed_at
 attribute :id
 attribute :title
+attribute :survey_description
 node(:survey_id){|rs| rs.survey.api_id }
 
 child (@response_set.responses || []) => :responses do
   attribute :id
+  attribute :survey_description
   attribute :title
   attribute :api_id => :uuid
   attribute :created_at
