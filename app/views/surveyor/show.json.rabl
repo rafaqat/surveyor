@@ -6,6 +6,7 @@ attribute :id
 attribute :title
 attribute :survey_description
 attribute :survey_id
+attribute :user_id
 node(:survey_id){|rs| rs.survey.api_id }
 
 child (@response_set.responses || []) => :responses do
