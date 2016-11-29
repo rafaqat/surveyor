@@ -10,6 +10,7 @@ module Surveyor
 
       included do
         # Associations
+        has_many :survey_sections
         has_many :sections, class_name: 'SurveySection', :dependent => :destroy
         has_many :response_sets
         has_many :translations, :class_name => "SurveyTranslation"
