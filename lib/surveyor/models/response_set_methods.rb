@@ -6,6 +6,9 @@ module Surveyor
       include ActiveModel::ForbiddenAttributesProtection
 
       included do
+        # ElasticSearch
+        update_index('response_sets#response_set') { self }
+        
         # Associations
         belongs_to :survey
         belongs_to :user
@@ -28,9 +31,6 @@ module Surveyor
           return true if hash["answer_id"].blank?
           return false if (q = Question.find_by_id(hash["question_id"])) and q.pick == "one"
           hash.any?{|k,v| v.is_a?(Array) ? v.all?{|x| x.to_s.blank?} : v.to_s.blank?}
-        end
-        def test
-          return 'sdf'
         end
       end
 
