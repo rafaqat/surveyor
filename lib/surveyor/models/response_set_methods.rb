@@ -29,6 +29,9 @@ module Surveyor
           return false if (q = Question.find_by_id(hash["question_id"])) and q.pick == "one"
           hash.any?{|k,v| v.is_a?(Array) ? v.all?{|x| x.to_s.blank?} : v.to_s.blank?}
         end
+        def test
+          return 'sdf'
+        end
       end
 
       def ensure_start_timestamp
