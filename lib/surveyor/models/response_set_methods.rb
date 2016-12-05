@@ -5,10 +5,7 @@ module Surveyor
       include ActiveModel::Validations
       include ActiveModel::ForbiddenAttributesProtection
 
-      included do
-        # ElasticSearch
-        update_index('response_sets#response_set') { self }
-        
+      included do        
         # Associations
         belongs_to :survey
         belongs_to :user
